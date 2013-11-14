@@ -8,8 +8,10 @@ INSTALL_PREFIX = /usr/local
 ifeq ($(shell uname), Linux)
 
 all: 
-	$(CC) src/main.cpp -o bin/RiftDogFighter $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
+	$(CC) src/*.cpp -o bin/RiftDogFighter $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
+
 .PHONY: clean
+
 clean:
 	rm -r ./bin/*
 
