@@ -1,6 +1,7 @@
 #include "UserPlane.hpp"
 
 using namespace Annwvyn;
+using namespace Ogre;
 using namespace std;
 
 UserPlane::UserPlane()
@@ -13,7 +14,12 @@ UserPlane::UserPlane(AnnGameObject* Cocktpit) :
     m_Cocktpit(Cocktpit),
     m_GameEngine(NULL),
     m_life(100),
-    m_damage(100)
+    m_damage(100),
+    m_mass(24500),
+    m_acceleration(0),
+    m_thrust(0),
+    m_portance(0)
+
 {
     if (!Cocktpit)
         exit(-1);
@@ -33,4 +39,17 @@ void UserPlane::setCameraToPlanePosition()
     {
         m_GameEngine->getBodyParams()->Position = m_Cocktpit->pos();
     }
+}
+
+void UserPlane::setVelocity(Vector3 v)
+{
+    m_velocity = v;
+}
+
+void UserPlane::move(float time, bool millisec)
+{
+    if(time < 0) time = m_GameEngine->getTime();
+    if(millisec) time /= 1000.0f;
+    cout << "time : " << time << endl;
+    m_Cocktpit->setPos(m_Cocktpit->pos() + m_velocity*time);
 }

@@ -9,6 +9,8 @@
 #include <cstdlib>
 
 using namespace Annwvyn;
+using namespace Ogre;
+
 class UserPlane
 {
     public:
@@ -18,6 +20,9 @@ class UserPlane
         void setGameEngine(AnnEngine* GameEngine);
         
         void setCameraToPlanePosition();
+
+        void setVelocity(Vector3 v);
+        void move(float time = -1, bool millisec = false);
     private:
         AnnGameObject* m_Cocktpit;
         AnnEngine* m_GameEngine;
@@ -26,7 +31,7 @@ class UserPlane
 
         //physics
         float m_mass; //in kg
-        Ogre::vector3 m_velocity; //in m/s
+        Vector3 m_velocity; //in m/s
         float m_acceleration; //in m/s²
         float m_gravitationalAcceleration; //in m/s²
         float m_thrust; //in newton
