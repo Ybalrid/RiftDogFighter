@@ -35,8 +35,17 @@ int main(int argc, char **argv)
 
 	UserPlane player(GameEngine->createGameObject("Cocktpit.mesh")); player.setGameEngine(GameEngine);
     while(!GameEngine->requestStop())
-    {  
-        player.setVelocity(Ogre::Vector3(0,0,-40));
+    { 
+
+        if(GameEngine->isKeyDown(OIS::KC_C))
+            player.setVelocity(Ogre::Vector3(0,0,-40));
+        else if(GameEngine->isKeyDown(OIS::KC_V))
+            player.setVelocity(Ogre::Vector3(0,0,40));
+        else 
+            player.setVelocity(Ogre::Vector3(0,0,0));
+
+
+
         player.move();
         player.setCameraToPlanePosition();
 		GameEngine->refresh();

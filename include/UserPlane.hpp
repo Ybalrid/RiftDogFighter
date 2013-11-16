@@ -23,6 +23,7 @@ class UserPlane
 
         void setVelocity(Vector3 v);
         void move(float time = -1, bool millisec = false);
+
     private:
         AnnGameObject* m_Cocktpit;
         AnnEngine* m_GameEngine;
