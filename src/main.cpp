@@ -12,28 +12,69 @@ int main(int argc, char **argv)
 {
 
 	Annwvyn::AnnEngine* GameEngine = new Annwvyn::AnnEngine;
+    Ogre::String res= "r.cfg"; 
+    Ogre::ConfigFile cf;
+    cf.load(res);
+    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
 
-	GameEngine->loadZip("media/OgreOculus.zip");
-	GameEngine->loadDir("media");
-	GameEngine->loadDir("media/dome");
+    Ogre::String secName, typeName, archName;
+    while (seci.hasMoreElements())
+    {
+        secName = seci.peekNextKey();
+        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+        Ogre::ConfigFile::SettingsMultiMap::iterator i;
+        for (i = settings->begin(); i != settings->end(); ++i)
+        {
+            typeName = i->first;
+            archName = i->second;
+            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
+                    archName, typeName, secName);
+        }
+    }
+
+    GameEngine->loadZip("media/OgreOculus.zip");
+    GameEngine->loadDir("media");
+    GameEngine->loadDir("media/dome");
+
+    CEGUI::ImageManager::setImagesetDefaultResourceGroup("Imagesets");
+    CEGUI::Font::setDefaultResourceGroup("Fonts");
+    CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+    CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+    CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+
+
     GameEngine->initRessources();
 
-	//load Map
-	Annwvyn::AnnGameObject* Map = GameEngine->createGameObject("Map.mesh");
+    //load Map
+    Annwvyn::AnnGameObject* Map = GameEngine->createGameObject("Map.mesh");
 
-     
-	//add lights
-	GameEngine->setAmbiantLight(Ogre::ColourValue(0.3f,0.3f,0.3f));
-	Annwvyn::AnnLightObject* light = GameEngine->addLight();
 
-	//set sky
-	GameEngine->setSkyDomeMaterial(true,"Sky/dome1");
-	GameEngine->getBodyParams()->Position = Ogre::Vector3(0,0,100);
+    //add lights
+    GameEngine->setAmbiantLight(Ogre::ColourValue(0.3f,0.3f,0.3f));
+    Annwvyn::AnnLightObject* light = GameEngine->addLight();
+
+    //set sky
+    GameEngine->setSkyDomeMaterial(true,"Sky/dome1");
+    GameEngine->getBodyParams()->Position = Ogre::Vector3(0,0,100);
 
     GameEngine->oculusInit();
-    
 
-	UserPlane player(GameEngine->createGameObject("Cocktpit.mesh")); player.setGameEngine(GameEngine);
+
+    UserPlane player(GameEngine->createGameObject("Cocktpit.mesh")); player.setGameEngine(GameEngine);
+    
+    CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+
+    CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+    CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
+
+    CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    quit->setText("Quit");
+    quit->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+
+    sheet->addChild(quit);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
+
+
     while(!GameEngine->requestStop())
     { 
 
@@ -48,6 +89,6 @@ int main(int argc, char **argv)
 
         player.move();
         player.setCameraToPlanePosition();
-		GameEngine->refresh();
+        GameEngine->refresh();
     }
 }
