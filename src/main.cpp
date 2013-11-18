@@ -67,11 +67,25 @@ int main(int argc, char **argv)
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
     CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
 
-    CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
-    quit->setText("Quit");
-    quit->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    CEGUI::Window *Test = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    Test->setText("TEST");
 
-    sheet->addChild(quit);
+    
+    Test->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25+GameEngine->getCentreOffset()/2 - 0.15/2,0),CEGUI::UDim(0.5,0)));
+
+
+    Test->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+
+    CEGUI::Window *Test2 = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+
+    Test2->setText("TEST");
+    Test2->setPosition(CEGUI::UVector2(CEGUI::UDim(1 - (0.25+GameEngine->getCentreOffset()/2 + 0.15/2), 0),CEGUI::UDim(0.5,0)));
+    Test2->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+    
+    sheet->addChild(Test2);
+
+    sheet->addChild(Test);
+
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
 
 
@@ -89,6 +103,7 @@ int main(int argc, char **argv)
 
         player.move();
         player.setCameraToPlanePosition();
+        std::cout << GameEngine->getCentreOffset() << std::endl;
         GameEngine->refresh();
     }
 }
