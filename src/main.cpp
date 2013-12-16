@@ -1,6 +1,7 @@
 #include <Annwvyn.h>
 
 #include "UserPlane.hpp"
+#include "StereoscopicWindow.hpp"
 
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -67,10 +68,9 @@ int main(int argc, char **argv)
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
     CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
 
-    CEGUI::Window *Test = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
-    Test->setText("TEST");
-
+    /*CEGUI::Window *Test = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
     
+    Test->setText("TEST");
     Test->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25+GameEngine->getCentreOffset()/2 - 0.15/2,0),CEGUI::UDim(0.5,0)));
 
 
@@ -85,6 +85,15 @@ int main(int argc, char **argv)
     sheet->addChild(Test2);
 
     sheet->addChild(Test);
+    */
+
+    CEGUI::StereoscopicWindow sw;
+    sw.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
+    sw.setCenterOffset(GameEngine->getCentreOffset());
+    sw.setText("Hello Flat World!");
+    sw.setSize(0.11,0.04);
+    sw.setPosition(0.5,0.1);
+    sw.addChildToSheet(sheet);
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
 
