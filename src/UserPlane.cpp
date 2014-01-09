@@ -50,6 +50,5 @@ void UserPlane::move(float time, bool millisec)
 {
     if(time < 0) time = m_GameEngine->getTime();
     if(millisec) time /= 1000.0f;
-    cout << "time : " << time << endl;
     m_Cocktpit->setPos(m_Cocktpit->pos() + m_velocity*time);
 }

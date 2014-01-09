@@ -5,9 +5,22 @@
 
 # Compiled Dynamic libraries
 *.so
+*.so.*
 *.dylib
 
 # Compiled Static libraries
 *.lai
 *.la
 *.a
+
+# Exuberant Ctags 
+tags
+
+# Vim swap files
+*.swp
+
+# Logs
+*.log
+
+# Compilled file
+bin/RiftDogFighter

@@ -1,7 +1,8 @@
 #include <Annwvyn.h>
 
+//#include <fstring>
 #include "UserPlane.hpp"
-#include "StereoscopicWindow.hpp"
+//#include "StereoscopicWindow.hpp"
 
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -11,9 +12,11 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 int main(int argc, char **argv)
 #endif
 {
-
+    
 	Annwvyn::AnnEngine* GameEngine = new Annwvyn::AnnEngine;
-    Ogre::String res= "r.cfg"; 
+    GameEngine->loadResFile("r.cfg");
+    
+    /*Ogre::String res= "r.cfg"; 
     Ogre::ConfigFile cf;
     cf.load(res);
     Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
@@ -31,7 +34,7 @@ int main(int argc, char **argv)
             Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
                     archName, typeName, secName);
         }
-    }
+    }*/
 
     GameEngine->loadZip("media/OgreOculus.zip");
     GameEngine->loadDir("media");
@@ -68,25 +71,6 @@ int main(int argc, char **argv)
     CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
     CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet");
 
-    /*CEGUI::Window *Test = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
-    
-    Test->setText("TEST");
-    Test->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25+GameEngine->getCentreOffset()/2 - 0.15/2,0),CEGUI::UDim(0.5,0)));
-
-
-    Test->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
-
-    CEGUI::Window *Test2 = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
-
-    Test2->setText("TEST");
-    Test2->setPosition(CEGUI::UVector2(CEGUI::UDim(1 - (0.25+GameEngine->getCentreOffset()/2 + 0.15/2), 0),CEGUI::UDim(0.5,0)));
-    Test2->setSize(CEGUI::USize(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
-    
-    sheet->addChild(Test2);
-
-    sheet->addChild(Test);
-    */
-
     CEGUI::StereoscopicWindow sw;
     sw.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
     sw.setCenterOffset(GameEngine->getCentreOffset());
@@ -96,10 +80,11 @@ int main(int argc, char **argv)
     sw.addChildToSheet(sheet);
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
+    
 
 
     while(!GameEngine->requestStop())
-    { 
+    {
 
         if(GameEngine->isKeyDown(OIS::KC_C))
             player.setVelocity(Ogre::Vector3(0,0,-40));
@@ -108,11 +93,9 @@ int main(int argc, char **argv)
         else 
             player.setVelocity(Ogre::Vector3(0,0,0));
 
-
-
         player.move();
         player.setCameraToPlanePosition();
-        std::cout << GameEngine->getCentreOffset() << std::endl;
+        
         GameEngine->refresh();
     }
 }
