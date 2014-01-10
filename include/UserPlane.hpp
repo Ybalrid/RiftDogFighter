@@ -24,6 +24,14 @@ class UserPlane
         void setVelocity(Vector3 v);
         void move(float time = -1, bool millisec = false);
 
+        void setPos(float x, float y, float z);
+        
+        void setRollAngle(float rad);
+
+        void setRollVelocity(float omega);
+        
+        float getRollAngle();
+        void updateRoll();
     private:
         AnnGameObject* m_Cocktpit;
         AnnEngine* m_GameEngine;
@@ -37,7 +45,9 @@ class UserPlane
         float m_gravitationalAcceleration; //in m/s²
         float m_thrust; //in newton
         float m_portance; // in newtown 
-
+        
+        float m_rollAngle; //in rad
+        float m_rollVelocity;//in rad/s
 };
 
 #endif

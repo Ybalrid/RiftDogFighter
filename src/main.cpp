@@ -1,8 +1,6 @@
 #include <Annwvyn.h>
 
-//#include <fstring>
 #include "UserPlane.hpp"
-//#include "StereoscopicWindow.hpp"
 
 #if OGRE_PLATFORM == PLATFORM_WIN32 || OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -14,28 +12,9 @@ int main(int argc, char **argv)
 {
     
 	Annwvyn::AnnEngine* GameEngine = new Annwvyn::AnnEngine;
+
     GameEngine->loadResFile("r.cfg");
     
-    /*Ogre::String res= "r.cfg"; 
-    Ogre::ConfigFile cf;
-    cf.load(res);
-    Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-    Ogre::String secName, typeName, archName;
-    while (seci.hasMoreElements())
-    {
-        secName = seci.peekNextKey();
-        Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-        Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
-            typeName = i->first;
-            archName = i->second;
-            Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-                    archName, typeName, secName);
-        }
-    }*/
-
     GameEngine->loadZip("media/OgreOculus.zip");
     GameEngine->loadDir("media");
     GameEngine->loadDir("media/dome");
@@ -56,15 +35,15 @@ int main(int argc, char **argv)
     //add lights
     GameEngine->setAmbiantLight(Ogre::ColourValue(0.3f,0.3f,0.3f));
     Annwvyn::AnnLightObject* light = GameEngine->addLight();
-
+    light->setPosition(0,0,250);
     //set sky
     GameEngine->setSkyDomeMaterial(true,"Sky/dome1");
-    GameEngine->getBodyParams()->Position = Ogre::Vector3(0,0,100);
+    GameEngine->getBodyParams()->Position = Ogre::Vector3(0,0,200);
 
     GameEngine->oculusInit();
 
 
-    UserPlane player(GameEngine->createGameObject("Cocktpit.mesh")); player.setGameEngine(GameEngine);
+    UserPlane player(GameEngine->createGameObject("Cocktpit.mesh")); player.setGameEngine(GameEngine); player.setPos(0,200,0);
     
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
@@ -81,8 +60,6 @@ int main(int argc, char **argv)
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
     
-
-
     while(!GameEngine->requestStop())
     {
 
@@ -90,8 +67,15 @@ int main(int argc, char **argv)
             player.setVelocity(Ogre::Vector3(0,0,-40));
         else if(GameEngine->isKeyDown(OIS::KC_V))
             player.setVelocity(Ogre::Vector3(0,0,40));
+        else if(GameEngine->isKeyDown(OIS::KC_B))
+            player.setRollVelocity(1);
+        else if(GameEngine->isKeyDown(OIS::KC_N))
+            player.setRollVelocity(-1);
         else 
+        {
             player.setVelocity(Ogre::Vector3(0,0,0));
+            player.setRollVelocity(0);
+        }
 
         player.move();
         player.setCameraToPlanePosition();

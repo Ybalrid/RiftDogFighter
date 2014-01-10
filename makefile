@@ -9,16 +9,11 @@ ifeq ($(shell uname), Linux)
 
 all: bin/RiftDogFighter
 
-#obj/StereoscopicWindow.o
 bin/RiftDogFighter: obj/main.o obj/UserPlane.o 	
-	$(CC)  obj/main.o obj/UserPlane.o obj/StereoscopicWindow.o -o bin/RiftDogFighter $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
+	$(CC)  obj/main.o obj/UserPlane.o -o bin/RiftDogFighter $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
 
-#include/StereoscopicWindow.hpp 
 obj/main.o: include/UserPlane.hpp src/main.cpp	
 	$(CC) -c src/main.cpp  -o obj/main.o $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
-
-#obj/StereoscopicWindow.o: src/StereoscopicWindow.cpp include/StereoscopicWindow.hpp
-#	$(CC) -c src/StereoscopicWindow.cpp  -o obj/StereoscopicWindow.o $(CFLAGS) $(LDFLAGS) $(IFLAGS) 
 
 obj/UserPlane.o: src/UserPlane.cpp include/UserPlane.hpp
 	$(CC) -c src/UserPlane.cpp  -o obj/UserPlane.o $(CFLAGS) $(LDFLAGS) $(IFLAGS) 

@@ -1,0 +1,20 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+UserPlane	UserPlane.cpp	/^UserPlane::UserPlane()$/;"	f	class:UserPlane	signature:()
+UserPlane	UserPlane.cpp	/^UserPlane::UserPlane(AnnGameObject* Cocktpit) :$/;"	f	class:UserPlane	signature:(AnnGameObject* Cocktpit)
+UserPlane::UserPlane	UserPlane.cpp	/^UserPlane::UserPlane()$/;"	f	class:UserPlane	signature:()
+UserPlane::UserPlane	UserPlane.cpp	/^UserPlane::UserPlane(AnnGameObject* Cocktpit) :$/;"	f	class:UserPlane	signature:(AnnGameObject* Cocktpit)
+UserPlane::move	UserPlane.cpp	/^void UserPlane::move(float time, bool millisec)$/;"	f	class:UserPlane	signature:(float time, bool millisec)
+UserPlane::setCameraToPlanePosition	UserPlane.cpp	/^void UserPlane::setCameraToPlanePosition()$/;"	f	class:UserPlane	signature:()
+UserPlane::setGameEngine	UserPlane.cpp	/^void UserPlane::setGameEngine(AnnEngine* GameEngine)$/;"	f	class:UserPlane	signature:(AnnEngine* GameEngine)
+UserPlane::setVelocity	UserPlane.cpp	/^void UserPlane::setVelocity(Vector3 v)$/;"	f	class:UserPlane	signature:(Vector3 v)
+WIN32_LEAN_AND_MEAN	main.cpp	6;"	d	file:
+WinMain	main.cpp	/^INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)$/;"	f	signature:(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
+move	UserPlane.cpp	/^void UserPlane::move(float time, bool millisec)$/;"	f	class:UserPlane	signature:(float time, bool millisec)
+setCameraToPlanePosition	UserPlane.cpp	/^void UserPlane::setCameraToPlanePosition()$/;"	f	class:UserPlane	signature:()
+setGameEngine	UserPlane.cpp	/^void UserPlane::setGameEngine(AnnEngine* GameEngine)$/;"	f	class:UserPlane	signature:(AnnEngine* GameEngine)
+setVelocity	UserPlane.cpp	/^void UserPlane::setVelocity(Vector3 v)$/;"	f	class:UserPlane	signature:(Vector3 v)
