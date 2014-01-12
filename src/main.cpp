@@ -53,16 +53,25 @@ int main(int argc, char **argv)
     CEGUI::StereoscopicWindow sw;
     sw.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton");
     sw.setCenterOffset(GameEngine->getCentreOffset());
-    sw.setText("Hello Flat World!");
+    sw.setText("2D CEGUI TEST");
     sw.setSize(0.11,0.04);
     sw.setPosition(0.5,0.1);
     sw.addChildToSheet(sheet);
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
     
+    int counter(0);
+
     while(!GameEngine->requestStop())
     {
+        counter++;
+        if(counter>50)
+            sw.setPosition(0.2,0.1);
+        else
+            sw.setPosition(0.5,0.1);
 
+        if(counter>100) counter = 0;
+    
         if(GameEngine->isKeyDown(OIS::KC_C))
             player.setVelocity(Ogre::Vector3(0,0,-40));
         else if(GameEngine->isKeyDown(OIS::KC_V))
@@ -71,10 +80,15 @@ int main(int argc, char **argv)
             player.setRollVelocity(1);
         else if(GameEngine->isKeyDown(OIS::KC_N))
             player.setRollVelocity(-1);
+        else if(GameEngine->isKeyDown(OIS::KC_H))
+            player.setPitchVelocity(1);
+        else if(GameEngine->isKeyDown(OIS::KC_J))
+            player.setPitchVelocity(-1);
         else 
         {
             player.setVelocity(Ogre::Vector3(0,0,0));
             player.setRollVelocity(0);
+            player.setPitchVelocity(0);
         }
 
         player.move();

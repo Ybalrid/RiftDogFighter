@@ -6,7 +6,8 @@ using namespace std;
 
 UserPlane::UserPlane()
 {
-    std::cout << "You have to give a cockpit to create the user's plane !" << std::endl;
+    std::cout << "You have to give a cockpit to create the user's plane !" 
+        << std::endl;
     exit(-1);
 }
 
@@ -52,10 +53,10 @@ void UserPlane::move(float time, bool millisec)
     if(time < 0) time = m_GameEngine->getTime();
     if(millisec) time /= 1000.0f;
     
-    
-    m_Cocktpit->setPos(m_Cocktpit->pos() + m_velocity*time);
+    m_Cocktpit->setPos(m_Cocktpit->pos() + calculateOrientation()*m_velocity*time);
 
-    setRollAngle(getRollAngle() + m_rollVelocity*time);
+    setRollAngle(m_rollAngle + m_rollVelocity*time);
+    setPitchAngle(m_pitchAngle + m_pitchVelocity*time);
 }
 
 void UserPlane::setPos(float x, float y, float z)
@@ -66,14 +67,22 @@ void UserPlane::setPos(float x, float y, float z)
 void UserPlane::setRollAngle(float rad)
 {
     m_rollAngle = rad;
-    updateRoll();
+    updateAngles();
 }
 
-void UserPlane::updateRoll()
+void UserPlane::setPitchAngle(float rad)
 {
-    Ogre::Quaternion Roll((Ogre::Radian)m_rollAngle,Ogre::Vector3::NEGATIVE_UNIT_Z);
-    m_Cocktpit->setOrientation(Roll);
-    m_GameEngine->setReferenceQuaternion(Roll);
+    m_pitchAngle = rad;
+    updateAngles();
+
+}
+
+void UserPlane::updateAngles()
+{
+    calculateAngularTransform();
+    Ogre::Quaternion newOrientation(calculateOrientation());
+    m_Cocktpit->setOrientation(newOrientation);
+    m_GameEngine->setReferenceQuaternion(newOrientation);
 }
 
 float UserPlane::getRollAngle()
@@ -84,4 +93,20 @@ float UserPlane::getRollAngle()
 void UserPlane::setRollVelocity(float omega)
 {
     m_rollVelocity = omega;
+}
+void UserPlane::setPitchVelocity(float omega)
+{
+    m_pitchVelocity = omega;
+}
+
+
+Ogre::Quaternion UserPlane::calculateOrientation()
+{
+    return RollTransform*PitchTransform;
+}
+
+void UserPlane::calculateAngularTransform()
+{
+    PitchTransform = Ogre::Quaternion((Ogre::Radian)m_pitchAngle, Ogre::Vector3::UNIT_X);
+    RollTransform = Ogre::Quaternion((Ogre::Radian)m_rollAngle, Ogre::Vector3::NEGATIVE_UNIT_Z);
 }

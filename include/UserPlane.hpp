@@ -27,11 +27,18 @@ class UserPlane
         void setPos(float x, float y, float z);
         
         void setRollAngle(float rad);
+        void setPitchAngle(float rad);
 
         void setRollVelocity(float omega);
-        
+        void setPitchVelocity(float omega);
+
         float getRollAngle();
-        void updateRoll();
+        void updateAngles();
+        
+        void calculateAngularTransform();
+
+        Ogre::Quaternion calculateOrientation();
+
     private:
         AnnGameObject* m_Cocktpit;
         AnnEngine* m_GameEngine;
@@ -47,7 +54,11 @@ class UserPlane
         float m_portance; // in newtown 
         
         float m_rollAngle; //in rad
+        float m_pitchAngle; //in rad
         float m_rollVelocity;//in rad/s
+        float m_pitchVelocity;//in rad/s
+        
+        Ogre::Quaternion RollTransform, PitchTransform;
 };
 
 #endif
