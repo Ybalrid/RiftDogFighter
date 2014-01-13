@@ -21,7 +21,11 @@ UserPlane::UserPlane(AnnGameObject* Cocktpit) :
     m_thrust(0),
     m_portance(0),
     m_rollAngle(0),
-    m_rollVelocity(0)
+    m_rollVelocity(0),
+    m_pitchAngle(0),
+    m_pitchVelocity(0),
+    m_lastRollAngle(0),
+    m_lastPitchAngle(0)
 {
     if (!Cocktpit)
         exit(-1);
@@ -53,10 +57,13 @@ void UserPlane::move(float time, bool millisec)
     if(time < 0) time = m_GameEngine->getTime();
     if(millisec) time /= 1000.0f;
     
-    m_Cocktpit->setPos(m_Cocktpit->pos() + calculateOrientation()*m_velocity*time);
+    setRollAngle(/*m_rollAngle*/ + m_rollVelocity*time);
+    setPitchAngle(/*m_pitchAngle*/ + m_pitchVelocity*time);
+    
+    updateAngles();
 
-    setRollAngle(m_rollAngle + m_rollVelocity*time);
-    setPitchAngle(m_pitchAngle + m_pitchVelocity*time);
+    m_Cocktpit->setPos(m_Cocktpit->pos() + /*calculateOrientation()*/m_Cocktpit->node()->getOrientation()*m_velocity*time);
+
 }
 
 void UserPlane::setPos(float x, float y, float z)
@@ -67,14 +74,11 @@ void UserPlane::setPos(float x, float y, float z)
 void UserPlane::setRollAngle(float rad)
 {
     m_rollAngle = rad;
-    updateAngles();
 }
 
 void UserPlane::setPitchAngle(float rad)
 {
     m_pitchAngle = rad;
-    updateAngles();
-
 }
 
 void UserPlane::updateAngles()
@@ -83,6 +87,10 @@ void UserPlane::updateAngles()
     Ogre::Quaternion newOrientation(calculateOrientation());
     m_Cocktpit->setOrientation(newOrientation);
     m_GameEngine->setReferenceQuaternion(newOrientation);
+    std::cerr << m_rollVelocity << " "
+        << m_pitchVelocity << endl;
+    std::cerr << m_rollAngle << " " 
+        << m_pitchAngle << endl;
 }
 
 float UserPlane::getRollAngle()
@@ -102,11 +110,12 @@ void UserPlane::setPitchVelocity(float omega)
 
 Ogre::Quaternion UserPlane::calculateOrientation()
 {
-    return RollTransform*PitchTransform;
+    return m_Cocktpit->Orientation()*RollTransform*PitchTransform;
 }
 
 void UserPlane::calculateAngularTransform()
 {
-    PitchTransform = Ogre::Quaternion((Ogre::Radian)m_pitchAngle, Ogre::Vector3::UNIT_X);
-    RollTransform = Ogre::Quaternion((Ogre::Radian)m_rollAngle, Ogre::Vector3::NEGATIVE_UNIT_Z);
+        
+        RollTransform = Ogre::Quaternion((Ogre::Radian)m_rollAngle,- Vector3::NEGATIVE_UNIT_Z);
+        PitchTransform = Ogre::Quaternion((Ogre::Radian)m_pitchAngle, Vector3::UNIT_X );
 }

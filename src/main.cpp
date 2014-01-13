@@ -60,37 +60,24 @@ int main(int argc, char **argv)
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
     
-    int counter(0);
-
+    player.setVelocity(Ogre::Vector3(0,0,-100));
     while(!GameEngine->requestStop())
     {
-        counter++;
-        if(counter>50)
-            sw.setPosition(0.2,0.1);
-        else
-            sw.setPosition(0.5,0.1);
-
-        if(counter>100) counter = 0;
-    
-        if(GameEngine->isKeyDown(OIS::KC_C))
-            player.setVelocity(Ogre::Vector3(0,0,-40));
-        else if(GameEngine->isKeyDown(OIS::KC_V))
-            player.setVelocity(Ogre::Vector3(0,0,40));
-        else if(GameEngine->isKeyDown(OIS::KC_B))
+        //Roll
+        if(GameEngine->isKeyDown(OIS::KC_LEFT))
             player.setRollVelocity(1);
-        else if(GameEngine->isKeyDown(OIS::KC_N))
+        else if(GameEngine->isKeyDown(OIS::KC_RIGHT))
             player.setRollVelocity(-1);
-        else if(GameEngine->isKeyDown(OIS::KC_H))
-            player.setPitchVelocity(1);
-        else if(GameEngine->isKeyDown(OIS::KC_J))
+        else player.setRollVelocity(0);
+        
+        //Pitch
+        if(GameEngine->isKeyDown(OIS::KC_UP))
             player.setPitchVelocity(-1);
-        else 
-        {
-            player.setVelocity(Ogre::Vector3(0,0,0));
-            player.setRollVelocity(0);
+        else if(GameEngine->isKeyDown(OIS::KC_DOWN))
+            player.setPitchVelocity(1);
+        else
             player.setPitchVelocity(0);
-        }
-
+        
         player.move();
         player.setCameraToPlanePosition();
         
