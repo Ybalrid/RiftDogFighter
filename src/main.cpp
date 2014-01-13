@@ -60,14 +60,15 @@ int main(int argc, char **argv)
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
     
-    player.setVelocity(Ogre::Vector3(0,0,-100));
     while(!GameEngine->requestStop())
     {
+        if(GameEngine->isKeyDown(OIS::KC_SPACE))  
+            player.setVelocity(Ogre::Vector3(0,0,-100));
         //Roll
         if(GameEngine->isKeyDown(OIS::KC_LEFT))
-            player.setRollVelocity(1);
+            player.setRollVelocity(1.5);
         else if(GameEngine->isKeyDown(OIS::KC_RIGHT))
-            player.setRollVelocity(-1);
+            player.setRollVelocity(-1.5);
         else player.setRollVelocity(0);
         
         //Pitch
