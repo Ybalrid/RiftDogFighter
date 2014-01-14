@@ -55,28 +55,54 @@ int main(int argc, char **argv)
     sw.setCenterOffset(GameEngine->getCentreOffset());
     sw.setText("2D CEGUI TEST");
     sw.setSize(0.11,0.04);
-    sw.setPosition(0.5,0.1);
+    sw.setPosition(0.5,0.5);
     sw.addChildToSheet(sheet);
 
     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(sheet);
     
+    int axis0(0),axis1(0);
+
     while(!GameEngine->requestStop())
     {
+        if(GameEngine->getOISJoyStick())
+        {
+            std::cerr << "Joystick detected at startup ";
+            GameEngine->getOISJoyStick()->capture();
+            std::cerr << "Joystick has " << GameEngine->getOISJoyStick()->getJoyStickState().mAxes.size() << " Axes" << std::endl;
+            axis0 = GameEngine->getOISJoyStick()->getJoyStickState().mAxes[0].abs;
+            axis1 = GameEngine->getOISJoyStick()->getJoyStickState().mAxes[1].abs;
+            std::cerr << axis0 << " " << axis1 << std::endl;
+            for(int i = 0; i < GameEngine->getOISJoyStick()->getJoyStickState().mButtons.size(); i++)
+            {
+                if(GameEngine->getOISJoyStick()->getJoyStickState().mButtons[i])
+                {
+                    std::cerr << "Button " << i << "Pressed" << std::endl;
+                    player.setVelocity(Ogre::Vector3(0,0,-100));
+                }
+            }
+            
+            if(axis0 > 256 || axis0 < -255)
+                player.setRollVelocity(((float)axis0/(float)GameEngine->getOISJoyStick()->MAX_AXIS)*-2);
+            if(axis1 > 256 || axis1 < -255)
+                player.setPitchVelocity(((float)axis1/(float)GameEngine->getOISJoyStick()->MAX_AXIS)*1.5);
+        }    
+        
         if(GameEngine->isKeyDown(OIS::KC_SPACE))  
             player.setVelocity(Ogre::Vector3(0,0,-100));
         //Roll
         if(GameEngine->isKeyDown(OIS::KC_LEFT))
-            player.setRollVelocity(1.5);
+            player.setRollVelocity(2);
         else if(GameEngine->isKeyDown(OIS::KC_RIGHT))
-            player.setRollVelocity(-1.5);
-        else player.setRollVelocity(0);
+            player.setRollVelocity(-2);
+        else if(!(axis0 > 256 || axis0 < -255))
+            player.setRollVelocity(0);
         
         //Pitch
         if(GameEngine->isKeyDown(OIS::KC_UP))
-            player.setPitchVelocity(-1);
+            player.setPitchVelocity(-1.5);
         else if(GameEngine->isKeyDown(OIS::KC_DOWN))
-            player.setPitchVelocity(1);
-        else
+            player.setPitchVelocity(1.5);
+        else if(!(axis1 > 256 || axis1 < -255))
             player.setPitchVelocity(0);
         
         player.move();

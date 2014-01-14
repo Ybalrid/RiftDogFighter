@@ -58,7 +58,6 @@ class UserPlane
         float m_rollVelocity;//in rad/s
         float m_pitchVelocity;//in rad/s
         
-        float m_lastRollAngle, m_lastPitchAngle;
         Ogre::Quaternion RollTransform, PitchTransform;
 };
 

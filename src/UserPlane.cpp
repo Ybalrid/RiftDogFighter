@@ -23,9 +23,7 @@ UserPlane::UserPlane(AnnGameObject* Cocktpit) :
     m_rollAngle(0),
     m_rollVelocity(0),
     m_pitchAngle(0),
-    m_pitchVelocity(0),
-    m_lastRollAngle(0),
-    m_lastPitchAngle(0)
+    m_pitchVelocity(0)
 {
     if (!Cocktpit)
         exit(-1);
@@ -57,12 +55,12 @@ void UserPlane::move(float time, bool millisec)
     if(time < 0) time = m_GameEngine->getTime();
     if(millisec) time /= 1000.0f;
     
-    setRollAngle(/*m_rollAngle*/ + m_rollVelocity*time);
-    setPitchAngle(/*m_pitchAngle*/ + m_pitchVelocity*time);
+    setRollAngle(m_rollVelocity*time);
+    setPitchAngle(m_pitchVelocity*time);
     
     updateAngles();
 
-    m_Cocktpit->setPos(m_Cocktpit->pos() + /*calculateOrientation()*/m_Cocktpit->node()->getOrientation()*m_velocity*time);
+    m_Cocktpit->setPos(m_Cocktpit->pos() + m_Cocktpit->node()->getOrientation()*m_velocity*time);
 
 }
 
@@ -115,7 +113,6 @@ Ogre::Quaternion UserPlane::calculateOrientation()
 
 void UserPlane::calculateAngularTransform()
 {
-        
-        RollTransform = Ogre::Quaternion((Ogre::Radian)m_rollAngle,- Vector3::NEGATIVE_UNIT_Z);
-        PitchTransform = Ogre::Quaternion((Ogre::Radian)m_pitchAngle, Vector3::UNIT_X );
+    RollTransform = Ogre::Quaternion((Ogre::Radian)m_rollAngle,- Vector3::NEGATIVE_UNIT_Z);
+    PitchTransform = Ogre::Quaternion((Ogre::Radian)m_pitchAngle, Vector3::UNIT_X );
 }
