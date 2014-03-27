@@ -7,6 +7,7 @@
 #include <iostream>
 //C Library for C++
 #include <cstdlib>
+#include "EnemyPlane.hpp"
 
 using namespace Annwvyn;
 using namespace Ogre;
@@ -16,7 +17,7 @@ class UserPlane
     public:
         UserPlane();
         UserPlane(AnnGameObject* Cocktpit);
-        
+        void shoot();       
         void setGameEngine(AnnEngine* GameEngine);
         
         void setCameraToPlanePosition();
@@ -28,9 +29,11 @@ class UserPlane
         
         void setRollAngle(float rad);
         void setPitchAngle(float rad);
+        void setYawAngle(float rad);
 
         void setRollVelocity(float omega);
         void setPitchVelocity(float omega);
+        void setYawVelocity(float omega);
 
         float getRollAngle();
         void updateAngles();
@@ -38,6 +41,9 @@ class UserPlane
         void calculateAngularTransform();
 
         Ogre::Quaternion calculateOrientation();
+        Ogre::Vector3 getVelocity();
+
+        void setEnemyList(std::vector<EnemyPlane*>* vect);
 
     private:
         AnnGameObject* m_Cocktpit;
@@ -46,19 +52,19 @@ class UserPlane
         int m_damage;
 
         //physics
-        float m_mass; //in kg
         Vector3 m_velocity; //in m/s
-        float m_acceleration; //in m/s²
-        float m_gravitationalAcceleration; //in m/s²
-        float m_thrust; //in newton
-        float m_portance; // in newtown 
         
         float m_rollAngle; //in rad
         float m_pitchAngle; //in rad
+        float m_yawAngle; //in rad
         float m_rollVelocity;//in rad/s
         float m_pitchVelocity;//in rad/s
+        float m_yawVelocity;//in rad/s
         
-        Ogre::Quaternion RollTransform, PitchTransform;
+        Ogre::Quaternion RollTransform, PitchTransform, YawTransform;
+        
+        std::vector<EnemyPlane*> *EnemyList;
+        
 };
 
 #endif
